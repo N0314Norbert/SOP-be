@@ -52,7 +52,7 @@ export const loginUser = (req, res) => {
           if (rows.length >= 1) {
             res.send('OK');
           } else {
-            res.send('NO');
+            res.status(401).send('NO');
           }
         } else {
           res.status(400).json({ error: err });

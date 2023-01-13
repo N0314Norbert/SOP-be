@@ -1,11 +1,28 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-
+import swaggerJSDoc from 'swagger-jsdoc';
+import { createRequire } from 'module';
 import usersRoutes from './routes/accounts.js';
+
+const require = createRequire(import.meta.url);
+const swaggerUi = require('swagger-ui-express');
 
 const app = express();
 const PORT = 5000;
+
+const swaggerOptions = {
+  swaggerDefinition: {
+    info: {
+      title: 'SOP API',
+      servers: ['http://localhost:5000'],
+    },
+  },
+  apis: ['./controllers/*js', './routes/*js'],
+};
+
+const swaggerDoc = swaggerJSDoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
